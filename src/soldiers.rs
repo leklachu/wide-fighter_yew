@@ -1,3 +1,10 @@
+// The Soldiers, their tribes and statistics.
+// Making a club of them is in fightclub
+
+// How many tribes are there to fight?
+// (used across multiple modules; should be here or in fightclub.rs I guess
+pub const FIGHT_QUANTITY: usize = 6;
+
 #[derive(Debug, Copy, Clone)]
 pub enum Tribe {
    Barbarian,
@@ -8,8 +15,12 @@ pub enum Tribe {
    Custom,
 }
 
+/////////////////////////////////////////
+// Base Soldiers to go in a fight club //
+/////////////////////////////////////////
+
 #[derive(Debug, Copy, Clone)]
-struct SoldierBase {
+pub struct SoldierBase {
    params: SoldierType,
    tribe: Tribe,
    levels: Levels,
@@ -24,7 +35,16 @@ struct Levels {
 }
 
 impl SoldierBase {
-   fn new(tribe: Tribe) -> Self {
+   pub fn new(tribe: Tribe) -> Self {
+      let mut base = Self::new_zero(tribe);
+      base.levels.health = base.params.health_lvls as u8;
+      base.levels.attack = base.params.attack_lvls as u8;
+      base.levels.defence = base.params.defence_lvls as u8;
+      base.levels.evade = base.params.evade_lvls as u8;
+      base
+   }
+
+   pub fn new_zero(tribe: Tribe) -> Self {
       let levels = Levels {
          health: 0,
          attack: 0,
@@ -45,54 +65,15 @@ impl SoldierBase {
          levels,
       }
    }
-}
 
-const FIGHT_QUANTITY: usize = 6;
-
-// #[derive(Debug, Copy, Clone)]
-struct FightClub([SoldierBase; FIGHT_QUANTITY]);
-
-impl FightClub {
-   fn iter_fights(&self) -> FightIter {
-      FightIter {
-         i: 1,
-         j: 0,
-         club: &self,
-      }
-   }
-
-   pub fn new() -> Self {
-      FightClub([
-         SoldierBase::new(Tribe::Barbarian),
-         SoldierBase::new(Tribe::Empire),
-         SoldierBase::new(Tribe::Atlantean),
-         SoldierBase::new(Tribe::Frisian),
-         SoldierBase::new(Tribe::Amazon),
-         SoldierBase::new(Tribe::Custom),
-      ])
-   }
-}
-
-struct FightIter<'a> {
-   i: usize,
-   j: usize,
-   club: &'a FightClub,
-}
-
-impl Iterator for FightIter<'_> {
-   type Item = (SoldierBase, SoldierBase);
-
-   fn next(&mut self) -> Option<Self::Item> {
-      if self.j < FIGHT_QUANTITY {
-         self.j += 1;
-         Some((self.club.0[self.i - 1], self.club.0[self.j - 1]))
-      } else if self.i < FIGHT_QUANTITY {
-         self.i += 1;
-         self.j = self.i;
-         Some((self.club.0[self.i - 1], self.club.0[self.j - 1]))
-      } else {
-         None
-      }
+   pub fn soldier(&self) -> Soldier {
+      Soldier::new_anylvl(
+         self.params,
+         self.levels.health as i32,
+         self.levels.attack as i32,
+         self.levels.defence as i32,
+         self.levels.evade as i32,
+      )
    }
 }
 
@@ -142,7 +123,7 @@ impl Soldier {
       }
    }
 
-   pub fn _new_anylvl(tribe: SoldierType, h_lvl: i32, a_lvl: i32, d_lvl: i32, e_lvl: i32) -> Self {
+   pub fn new_anylvl(tribe: SoldierType, h_lvl: i32, a_lvl: i32, d_lvl: i32, e_lvl: i32) -> Self {
       Soldier {
          health: tribe.health_base + tribe.health_incr * h_lvl,
          attack_max: tribe.attack_maxm + tribe.attack_incr * a_lvl,

@@ -13,8 +13,9 @@ enum Msg {
 
 struct Model {
    link: ComponentLink<Self>,
-   value: i64,
+   n: i32,
    results1: Data,
+   fight_club: fightclub::FightClub,
 }
 
 impl Component for Model {
@@ -24,18 +25,21 @@ impl Component for Model {
    fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
       Self {
          link,
-         value: 0,
-         results1: Data::test(),
+         n: 100000,
+         results1: results::Data::default(),
+         fight_club: fightclub::FightClub::new(),
       }
    }
 
    fn update(&mut self, msg: Self::Message) -> ShouldRender {
       match msg {
          Msg::Compute => {
-            self.value += 1;
-            let bvse = fightclub::fightbmaxemax();
-            self.results1.b.e = Datum::Percent(bvse.s1_total_win_percent);
-            self.results1.e.b = Datum::Percent(100.0 - bvse.s1_total_win_percent);
+            // let bvse = fightclub::fightbmaxemax();
+            // self.results1[0][1] = Datum::Percent(bvse.s1_total_win_percent);
+            // self.results1[1][0] = Datum::Percent(100.0 - bvse.s1_total_win_percent);
+            self
+               .fight_club
+               .fight_all_parallel(&mut self.results1, self.n);
             true
          }
       }
@@ -47,12 +51,12 @@ impl Component for Model {
 
    fn view(&self) -> Html {
       let onclick = self.link.callback(|_| Msg::Compute);
-      let title1 = String::from("Fight 1");
+      let title1 = String::from("% win rate of row tribe vs column tribe");
       html! {
          <>
          <div>
             <button onclick={onclick}>{ "Fight!" }</button>
-            <p>{ "Fights are, " } { self.value }</p>
+            <p>{ "Fighting " } { self.n } {" times" }</p>
          </div>
          { results::results_table(title1, self.results1) }
          </>

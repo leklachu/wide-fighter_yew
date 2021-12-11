@@ -1,3 +1,6 @@
+// use super::fightclub::FIGHT_QUANTITY;
+use super::soldiers;
+use super::soldiers::FIGHT_QUANTITY;
 use yew::prelude::*;
 
 /////////////////////
@@ -25,58 +28,13 @@ impl std::fmt::Display for Datum {
          Datum::Nil => write!(f, "-"),
          Datum::Num(x) => write!(f, "{}", x),
          Datum::Stat(m, s) => write!(f, "{}±{}", m, s),
-         Datum::Percent(x) => write!(f, "{}%", x),
+         Datum::Percent(x) => write!(f, "{:.1}%", x),
       }
    }
 }
 
-// type DataA = [[Datum; NUM_TRIBES]; NUM_TRIBES];
-
-#[derive(Copy, Clone, Debug, PartialEq, Default)]
-pub struct Data {
-   pub b: Row,
-   pub e: Row,
-   pub a: Row,
-   pub f: Row,
-   pub z: Row,
-   pub c: Row,
-}
-
-#[derive(Copy, Clone, Debug, PartialEq, Default)]
-pub struct Row {
-   pub b: Datum,
-   pub e: Datum,
-   pub a: Datum,
-   pub f: Datum,
-   pub z: Datum,
-   pub c: Datum,
-}
-
-impl Data {
-   pub fn test() -> Self {
-      Data {
-         b: Row::test(),
-         e: Row::test(),
-         a: Row::test(),
-         f: Row::test(),
-         z: Row::test(),
-         c: Row::test(),
-      }
-   }
-}
-
-impl Row {
-   fn test() -> Self {
-      Row {
-         b: Datum::Num(412),
-         e: Datum::Percent(49.0),
-         a: Datum::Stat(11.1, 4.23),
-         f: Datum::Num(66),
-         z: Datum::Num(5),
-         c: Datum::Num(9),
-      }
-   }
-}
+// #[derive(Copy, Clone, Debug, PartialEq, Default)]
+pub type Data = [[Datum; FIGHT_QUANTITY]; FIGHT_QUANTITY];
 
 pub fn results_table(title: String, data: Data) -> Html {
    html! {
@@ -92,52 +50,52 @@ pub fn results_table(title: String, data: Data) -> Html {
             <th>{"custom"}</th>
          </tr><tr>
             <th> {"Barbarians"} </th>
-            <td> {data.b.b} </td>
-            <td> {data.b.e} </td>
-            <td> {data.b.a} </td>
-            <td> {data.b.f} </td>
-            <td> {data.b.z} </td>
-            <td> {data.b.c} </td>
+            <td> {data[0][0]} </td>
+            <td> {data[0][1]} </td>
+            <td> {data[0][2]} </td>
+            <td> {data[0][3]} </td>
+            <td> {data[0][4]} </td>
+            <td> {data[0][5]} </td>
          </tr><tr>
             <th> {"Empire"} </th>
-            <td> {data.e.b} </td>
-            <td> {data.e.e} </td>
-            <td> {data.e.a} </td>
-            <td> {data.e.f} </td>
-            <td> {data.e.z} </td>
-            <td> {data.e.c} </td>
+            <td> {data[1][0]} </td>
+            <td> {data[1][1]} </td>
+            <td> {data[1][2]} </td>
+            <td> {data[1][3]} </td>
+            <td> {data[1][4]} </td>
+            <td> {data[1][5]} </td>
          </tr><tr>
             <th> {"Atlanteans"} </th>
-            <td> {data.a.b} </td>
-            <td> {data.a.e} </td>
-            <td> {data.a.a} </td>
-            <td> {data.a.f} </td>
-            <td> {data.a.z} </td>
-            <td> {data.a.c} </td>
+            <td> {data[2][0]} </td>
+            <td> {data[2][1]} </td>
+            <td> {data[2][2]} </td>
+            <td> {data[2][3]} </td>
+            <td> {data[2][4]} </td>
+            <td> {data[2][5]} </td>
          </tr><tr>
             <th> {"Frisians"} </th>
-            <td> {data.f.b} </td>
-            <td> {data.f.e} </td>
-            <td> {data.f.a} </td>
-            <td> {data.f.f} </td>
-            <td> {data.f.z} </td>
-            <td> {data.f.c} </td>
+            <td> {data[3][0]} </td>
+            <td> {data[3][1]} </td>
+            <td> {data[3][2]} </td>
+            <td> {data[3][3]} </td>
+            <td> {data[3][4]} </td>
+            <td> {data[3][5]} </td>
          </tr><tr>
             <th> {"Amazons"} </th>
-            <td> {data.z.b} </td>
-            <td> {data.z.e} </td>
-            <td> {data.z.a} </td>
-            <td> {data.z.f} </td>
-            <td> {data.z.z} </td>
-            <td> {data.z.c} </td>
+            <td> {data[4][0]} </td>
+            <td> {data[4][1]} </td>
+            <td> {data[4][2]} </td>
+            <td> {data[4][3]} </td>
+            <td> {data[4][4]} </td>
+            <td> {data[4][5]} </td>
          </tr><tr>
             <th> {"custom"} </th>
-            <td> {data.c.b} </td>
-            <td> {data.c.e} </td>
-            <td> {data.c.a} </td>
-            <td> {data.c.f} </td>
-            <td> {data.c.z} </td>
-            <td> {data.c.c} </td>
+            <td> {data[5][0]} </td>
+            <td> {data[5][1]} </td>
+            <td> {data[5][2]} </td>
+            <td> {data[5][3]} </td>
+            <td> {data[5][4]} </td>
+            <td> {data[5][5]} </td>
          </tr>
       </table>
       </div>
