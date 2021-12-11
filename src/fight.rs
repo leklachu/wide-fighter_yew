@@ -1,5 +1,5 @@
+use super::results;
 use super::soldiers;
-// use rand::prelude::*;
 use rand::rngs::SmallRng;
 use rand::{Rng, SeedableRng};
 
@@ -7,11 +7,11 @@ use rand::{Rng, SeedableRng};
 /// half the fights start with s1, half with s2, and wins and survivors' statistics are printed.
 pub fn fight_parallel(
    s1: soldiers::Soldier,
-   s1_name: String,
+   // s1_name: String,
    s2: soldiers::Soldier,
-   s2_name: String,
+   // s2_name: String,
    n: i32,
-) -> () {
+) -> results::ParallelFight {
    // ) -> (Vec<u16>, Vec<u16>, Vec<u16>, Vec<u16>) {
    // results only handles maximum health <= 65536. Fine for now so just check and panic
    if (s1.health > 65536) || (s2.health > 65536) {
@@ -51,9 +51,11 @@ pub fn fight_parallel(
       }
    }
 
-   // Print the results
+   // Calculate the results
 
-   let stats = |survivors: &Vec<u16>, base_health: i32, name: &String| {
+   let mut fight_results = results::ParallelFight::new();
+
+   let stats = |survivors: &Vec<u16>, base_health: i32| {
       let health_total: u64 = survivors.iter().map(|h| (*h as u64)).sum();
       let health_total_percent = health_total as f32 * 200.0 / n as f32 / base_health as f32;
       let health_mean: i32 =
@@ -65,77 +67,89 @@ pub fn fight_parallel(
          / (survivors.len() as f32 - 1.0))
          .sqrt();
 
-      println!(
-         "{} remaining health: army total {:.1}%, individual average {} +- {:.0}",
-         name, health_total_percent, health_mean, health_stdev
-      );
+      // println!(
+      // "{} remaining health: army total {:.1}%, individual average {} +- {:.0}",
+      // name, health_total_percent, health_mean, health_stdev
+      // );
+      (health_total_percent, health_mean as f32, health_stdev)
    };
 
    // because I've got lazy now. Should rework stats and stats_t together not duplicate
-   let stats_t =
-      |survivors_a: &Vec<u16>, survivors_b: &Vec<u16>, base_health: i32, name: &String| {
-         let survivors = survivors_a.iter().chain(survivors_b.iter());
-         let survivors_len = survivors_a.len() + survivors_b.len();
-         let health_total: u64 = survivors.map(|h| (*h as u64)).sum();
-         let health_total_percent = health_total as f32 * 100.0 / n as f32 / base_health as f32;
-         let health_mean: i32 = (health_total / (survivors_len as u64)) as i32;
-         let survivors = survivors_a.iter().chain(survivors_b.iter());
-         let health_stdev = ((survivors
-            .map(|h| (*h as i64 - health_mean as i64).pow(2))
-            .sum::<i64>() as f32)
-            / (survivors_len as f32 - 1.0))
-            .sqrt();
+   let stats_t = |survivors_a: &Vec<u16>, survivors_b: &Vec<u16>, base_health: i32| {
+      let survivors = survivors_a.iter().chain(survivors_b.iter());
+      let survivors_len = survivors_a.len() + survivors_b.len();
+      let health_total: u64 = survivors.map(|h| (*h as u64)).sum();
+      let health_total_percent = health_total as f32 * 100.0 / n as f32 / base_health as f32;
+      let health_mean: i32 = (health_total / (survivors_len as u64)) as i32;
+      let survivors = survivors_a.iter().chain(survivors_b.iter());
+      let health_stdev = ((survivors
+         .map(|h| (*h as i64 - health_mean as i64).pow(2))
+         .sum::<i64>() as f32)
+         / (survivors_len as f32 - 1.0))
+         .sqrt();
 
-         println!(
-            "{} remaining health: army total {:.1}%, individual average {} +- {:.0}",
-            name, health_total_percent, health_mean, health_stdev
-         );
-      };
+      // println!(
+      //    "{} remaining health: army total {:.1}%, individual average {} +- {:.0}",
+      //    name, health_total_percent, health_mean, health_stdev
+      // );
+      (health_total_percent, health_mean as f32, health_stdev)
+   };
 
-   println!("\n------\n");
+   // println!("\n------\n");
 
    let wins_a = survivors1a.len() as f32 * 200.0 / n as f32;
-   println!(
-      "{0} attacking {1}: {0} win {3} out of {4} = {2:.1}%",
-      s1_name,
-      s2_name,
-      wins_a,
-      survivors1a.len(),
-      n / 2
-   );
+   fight_results.s1a_wins(wins_a);
+   // println!(
+   //    "{0} attacking {1}: {0} win {3} out of {4} = {2:.1}%",
+   //    s1_name,
+   //    s2_name,
+   //    wins_a,
+   //    survivors1a.len(),
+   //    n / 2
+   // );
 
-   stats(&survivors1a, s1.health, &s1_name);
-   stats(&survivors2a, s2.health, &s2_name);
+   let (a, b, c) = stats(&survivors1a, s1.health);
+   fight_results.s1a_stats(a, b, c);
+   let (a, b, c) = stats(&survivors2a, s2.health);
+   fight_results.s2d_stats(a, b, c);
 
-   println!("\n------\n");
+   // println!("\n------\n");
 
    let wins_b = survivors2b.len() as f32 * 200.0 / n as f32;
-   println!(
-      "{0} attacking {1}: {0} win {3} out of {4} = {2:.1}%",
-      s2_name,
-      s1_name,
-      wins_b,
-      survivors1b.len(),
-      n / 2
-   );
+   fight_results.s1a_wins(wins_b);
+   // println!(
+   //    "{0} attacking {1}: {0} win {3} out of {4} = {2:.1}%",
+   //    s2_name,
+   //    s1_name,
+   //    wins_b,
+   //    survivors1b.len(),
+   //    n / 2
+   // );
 
-   stats(&survivors1b, s1.health, &s1_name);
-   stats(&survivors2b, s2.health, &s2_name);
+   let (a, b, c) = stats(&survivors1b, s1.health);
+   fight_results.s1d_stats(a, b, c);
+   let (a, b, c) = stats(&survivors2b, s2.health);
+   fight_results.s2a_stats(a, b, c);
 
-   println!("\n------\n");
+   // println!("\n------\n");
 
    let wins_total = (survivors1a.len() + survivors1b.len()) as f32 * 100.0 / n as f32;
-   println!(
-      "{0} and {1} fight: {0} win {3} out of {4} = {2:.1}%",
-      s1_name,
-      s2_name,
-      wins_total,
-      survivors1a.len() + survivors1b.len(),
-      n
-   );
+   fight_results.s1_wins(wins_total);
+   // println!(
+   //    "{0} and {1} fight: {0} win {3} out of {4} = {2:.1}%",
+   //    s1_name,
+   //    s2_name,
+   //    wins_total,
+   //    survivors1a.len() + survivors1b.len(),
+   //    n
+   // );
 
-   stats_t(&survivors1a, &survivors1b, s1.health, &s1_name);
-   stats_t(&survivors2a, &survivors2b, s2.health, &s2_name);
+   let (a, b, c) = stats_t(&survivors1a, &survivors1b, s1.health);
+   fight_results.s1_stats(a, b, c);
+   let (a, b, c) = stats_t(&survivors2a, &survivors2b, s2.health);
+   fight_results.s2_stats(a, b, c);
+
+   fight_results
 }
 
 // fight once, to the death

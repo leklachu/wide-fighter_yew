@@ -1,3 +1,107 @@
+#[derive(Debug, Copy, Clone)]
+pub enum Tribe {
+   Barbarian,
+   Empire,
+   Atlantean,
+   Frisian,
+   Amazon,
+   Custom,
+}
+
+#[derive(Debug, Copy, Clone)]
+struct SoldierBase {
+   params: SoldierType,
+   tribe: Tribe,
+   levels: Levels,
+}
+
+#[derive(Debug, Copy, Clone)]
+struct Levels {
+   health: u8,
+   attack: u8,
+   defence: u8,
+   evade: u8,
+}
+
+impl SoldierBase {
+   fn new(tribe: Tribe) -> Self {
+      let levels = Levels {
+         health: 0,
+         attack: 0,
+         defence: 0,
+         evade: 0,
+      };
+      let params = match tribe {
+         Tribe::Barbarian => BARBARIAN,
+         Tribe::Empire => EMPIRE,
+         Tribe::Atlantean => ATLANTEAN,
+         Tribe::Frisian => FRISIAN,
+         Tribe::Amazon => AMAZON,
+         Tribe::Custom => AMAZON,
+      };
+      SoldierBase {
+         params,
+         tribe,
+         levels,
+      }
+   }
+}
+
+const FIGHT_QUANTITY: usize = 6;
+
+// #[derive(Debug, Copy, Clone)]
+struct FightClub([SoldierBase; FIGHT_QUANTITY]);
+
+impl FightClub {
+   fn iter_fights(&self) -> FightIter {
+      FightIter {
+         i: 1,
+         j: 0,
+         club: &self,
+      }
+   }
+
+   pub fn new() -> Self {
+      FightClub([
+         SoldierBase::new(Tribe::Barbarian),
+         SoldierBase::new(Tribe::Empire),
+         SoldierBase::new(Tribe::Atlantean),
+         SoldierBase::new(Tribe::Frisian),
+         SoldierBase::new(Tribe::Amazon),
+         SoldierBase::new(Tribe::Custom),
+      ])
+   }
+}
+
+struct FightIter<'a> {
+   i: usize,
+   j: usize,
+   club: &'a FightClub,
+}
+
+impl Iterator for FightIter<'_> {
+   type Item = (SoldierBase, SoldierBase);
+
+   fn next(&mut self) -> Option<Self::Item> {
+      if self.j < FIGHT_QUANTITY {
+         self.j += 1;
+         Some((self.club.0[self.i - 1], self.club.0[self.j - 1]))
+      } else if self.i < FIGHT_QUANTITY {
+         self.i += 1;
+         self.j = self.i;
+         Some((self.club.0[self.i - 1], self.club.0[self.j - 1]))
+      } else {
+         None
+      }
+   }
+}
+
+///////////////////////
+// Soldier types and //
+// default settings  //
+///////////////////////
+
+#[derive(Debug, Copy, Clone)]
 pub struct SoldierType {
    pub health_lvls: i32,
    pub health_base: i32,
@@ -26,13 +130,6 @@ pub struct Soldier {
    pub evade: i32,
    // pub tribe: Tribe,
 }
-
-// #[derive(Debug, Copy, Clone)]
-// pub enum Tribe {
-//    Barbarian,
-//    Empire,
-//    Atlantean,
-//    Frisian,
 
 impl Soldier {
    pub fn new(tribe: SoldierType) -> Self {
@@ -160,3 +257,19 @@ pub const AMAZON: SoldierType = SoldierType {
    evade_base: 30,
    evade_incr: 15,
 };
+
+/////////////////////////////
+// TESTS //
+///////////
+
+#[cfg(test)]
+mod tests {
+   use super::*;
+
+   #[test]
+   fn iterator_len_correct() {
+      let fc = FightClub::new();
+      let fci = fc.iter_fights();
+      assert_eq!(fci.count(), FIGHT_QUANTITY * (FIGHT_QUANTITY + 1) / 2);
+   }
+}
