@@ -12,7 +12,6 @@ enum Msg {
 }
 
 struct Model {
-   link: ComponentLink<Self>,
    n: i32,
    fight_club: fightclub::FightClub,
 
@@ -31,9 +30,9 @@ impl Component for Model {
    type Message = Msg;
    type Properties = ();
 
-   fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
+   // fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
+   fn create(_ctx: &Context<Self>) -> Self {
       Self {
-         link,
          n: 100000,
          fight_club: fightclub::FightClub::new(),
 
@@ -49,7 +48,7 @@ impl Component for Model {
       }
    }
 
-   fn update(&mut self, msg: Self::Message) -> ShouldRender {
+   fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
       match msg {
          Msg::Compute => {
             // let bvse = fightclub::fightbmaxemax();
@@ -71,13 +70,10 @@ impl Component for Model {
       }
    }
 
-   fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-      false
-   }
-
-   fn view(&self) -> Html {
-      let compute_go = self.link.callback(|_| Msg::Compute);
-      // let change_n = self.link.callback(|e| {
+   fn view(&self, ctx: &Context<Self>) -> Html {
+      let link = ctx.link();
+      let compute_go = link.callback(|_| Msg::Compute);
+      // let change_n = link.callback(|e| {
       //    if
       //    ));
 
