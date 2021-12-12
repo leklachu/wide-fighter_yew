@@ -116,7 +116,7 @@ pub fn fight_parallel(
    // println!("\n------\n");
 
    let wins_b = survivors2b.len() as f32 * 200.0 / n as f32;
-   fight_results.s1a_wins(wins_b);
+   fight_results.s2a_wins(wins_b);
    // println!(
    //    "{0} attacking {1}: {0} win {3} out of {4} = {2:.1}%",
    //    s2_name,

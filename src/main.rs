@@ -90,7 +90,7 @@ impl Component for Model {
          { results::results_table(self.results_total_wins) }
          <h2>{ "% health remaining of row's team" }</h2>
          { results::results_table(self.results_total_health_remaining) }
-         <h2>{ "average health remaining of row's team" }</h2>
+         <h2>{ "average health remaining of row's surviving soldiers" }</h2>
          <p>{ "(for reference, max level Barbarians start at 22000)" }</p>
          { results::results_table(self.results_total_health_stats) }
 
@@ -100,14 +100,14 @@ impl Component for Model {
          <h2>{ "% win rate of row tribe vs column tribe" }</h2>
          { results::results_table(self.results_asym_wins) }
 
-         <h2>{ "% remaining health of row (aggressor)'s tribe" }</h2>
+         <h2>{ "% remaining health of row (aggressor)'s team" }</h2>
          { results::results_table(self.results_health_remaining_A) }
-         <h2>{ "average remaining health of row (aggressor)'s tribe" }</h2>
+         <h2>{ "average remaining health of row (aggressor)'s survivors" }</h2>
          { results::results_table(self.results_health_stats_A) }
 
-         <h2>{ "% remaining health of column (defender)'s tribe" }</h2>
+         <h2>{ "% remaining health of column (defender)'s team" }</h2>
          { results::results_table(self.results_health_remaining_D) }
-         <h2>{ "average remaining health of column (defender)'s tribe" }</h2>
+         <h2>{ "average remaining health of column (defender)'s survivors" }</h2>
          { results::results_table(self.results_health_stats_D) }
          </>
       }
