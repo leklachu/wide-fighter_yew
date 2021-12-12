@@ -113,7 +113,7 @@ pub struct Soldier {
 }
 
 impl Soldier {
-   pub fn new(tribe: SoldierType) -> Self {
+   fn _new(tribe: SoldierType) -> Self {
       Soldier {
          health: tribe.health_base,
          attack_max: tribe.attack_maxm,
@@ -133,7 +133,7 @@ impl Soldier {
       }
    }
 
-   pub fn new_max(tribe: SoldierType) -> Self {
+   fn _new_max(tribe: SoldierType) -> Self {
       Soldier {
          health: tribe.health_base + tribe.health_incr * tribe.health_lvls,
          attack_max: tribe.attack_maxm + tribe.attack_incr * tribe.attack_lvls,

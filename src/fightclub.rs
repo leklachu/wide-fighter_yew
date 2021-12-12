@@ -1,7 +1,6 @@
 // A group of soldiers, and ways to make them fight. Actual fight simulations are in fight.rs
 
 use super::fight;
-use super::results;
 use super::results::{Data, Datum};
 use super::soldiers::*;
 
@@ -41,10 +40,10 @@ impl FightClub {
       results_total_health_remaining: &mut Data,
       results_total_health_stats: &mut Data,
       results_asym_wins: &mut Data,
-      results_health_remaining_A: &mut Data,
-      results_health_stats_A: &mut Data,
-      results_health_remaining_D: &mut Data,
-      results_health_stats_D: &mut Data,
+      results_health_remaining_a: &mut Data,
+      results_health_stats_a: &mut Data,
+      results_health_remaining_d: &mut Data,
+      results_health_stats_d: &mut Data,
       n: i32,
    ) {
       for (i, j) in self.iter_fights() {
@@ -70,20 +69,20 @@ impl FightClub {
          results_asym_wins[j][i] = Datum::Percent(outcome.s2_aggressor_win_percent);
 
          // Aggressors' Health remaining
-         results_health_remaining_A[i][j] = Datum::Percent(outcome.s1_aggressor_health_percent);
-         results_health_remaining_A[j][i] = Datum::Percent(outcome.s2_aggressor_health_percent);
+         results_health_remaining_a[i][j] = Datum::Percent(outcome.s1_aggressor_health_percent);
+         results_health_remaining_a[j][i] = Datum::Percent(outcome.s2_aggressor_health_percent);
 
          // Aggressors' stats A
-         results_health_stats_A[i][j] = Datum::Stat(outcome.s1_aggressor_health_average);
-         results_health_stats_A[j][i] = Datum::Stat(outcome.s2_aggressor_health_average);
+         results_health_stats_a[i][j] = Datum::Stat(outcome.s1_aggressor_health_average);
+         results_health_stats_a[j][i] = Datum::Stat(outcome.s2_aggressor_health_average);
 
          // Defenders' Health remaining B
-         results_health_remaining_D[i][j] = Datum::Percent(outcome.s1_defender_health_percent);
-         results_health_remaining_D[j][i] = Datum::Percent(outcome.s2_defender_health_percent);
+         results_health_remaining_d[i][j] = Datum::Percent(outcome.s1_defender_health_percent);
+         results_health_remaining_d[j][i] = Datum::Percent(outcome.s2_defender_health_percent);
 
          // Defenders' Health stats B
-         results_health_stats_D[i][j] = Datum::Stat(outcome.s1_defender_health_average);
-         results_health_stats_D[j][i] = Datum::Stat(outcome.s2_defender_health_average);
+         results_health_stats_d[i][j] = Datum::Stat(outcome.s1_defender_health_average);
+         results_health_stats_d[j][i] = Datum::Stat(outcome.s2_defender_health_average);
       }
    }
 }
@@ -114,21 +113,4 @@ impl Iterator for FightIter {
          None
       }
    }
-}
-
-////////////////////////////////////////
-// Fight each team against the other, //
-// and put results in the given table //
-////////////////////////////////////////
-
-///////////////////
-// old
-
-pub fn fightbmaxemax() -> results::ParallelFight {
-   // let fight_result =
-   fight::fight_parallel(
-      Soldier::new_max(BARBARIAN),
-      Soldier::new_max(EMPIRE),
-      100000,
-   )
 }

@@ -1,5 +1,4 @@
 // use super::fightclub::FIGHT_QUANTITY;
-use super::soldiers;
 use super::soldiers::FIGHT_QUANTITY;
 use yew::prelude::*;
 
@@ -10,7 +9,7 @@ use yew::prelude::*;
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum Datum {
    Nil,
-   Num(i32),
+   // Num(i32),
    Stat((f32, f32)),
    Percent(f32),
 }
@@ -26,7 +25,7 @@ impl std::fmt::Display for Datum {
    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
       match self {
          Datum::Nil => write!(f, "-"),
-         Datum::Num(x) => write!(f, "{}", x),
+         // Datum::Num(x) => write!(f, "{}", x),
          Datum::Stat((m, s)) => write!(f, "{:.0}±{:.0}", m, s),
          Datum::Percent(x) => write!(f, "{:.1}%", x),
       }

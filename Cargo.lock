@@ -433,7 +433,7 @@ dependencies = [
 
 [[package]]
 name = "wide-fighter"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "getrandom",
  "rand",

@@ -1,14 +1,14 @@
 mod fight;
 mod fightclub;
 mod soldiers;
-use soldiers::*;
 
 use yew::prelude::*;
 mod results;
-use results::{Data, Datum};
+use results::Data;
 
 enum Msg {
    Compute,
+   // ChangeN(i32),
 }
 
 struct Model {
@@ -21,10 +21,10 @@ struct Model {
    results_total_health_stats: Data,
 
    results_asym_wins: Data,
-   results_health_remaining_A: Data,
-   results_health_stats_A: Data,
-   results_health_remaining_D: Data,
-   results_health_stats_D: Data,
+   results_health_remaining_a: Data,
+   results_health_stats_a: Data,
+   results_health_remaining_d: Data,
+   results_health_stats_d: Data,
 }
 
 impl Component for Model {
@@ -42,10 +42,10 @@ impl Component for Model {
          results_total_health_stats: results::Data::default(),
 
          results_asym_wins: results::Data::default(),
-         results_health_remaining_A: results::Data::default(),
-         results_health_stats_A: results::Data::default(),
-         results_health_remaining_D: results::Data::default(),
-         results_health_stats_D: results::Data::default(),
+         results_health_remaining_a: results::Data::default(),
+         results_health_stats_a: results::Data::default(),
+         results_health_remaining_d: results::Data::default(),
+         results_health_stats_d: results::Data::default(),
       }
    }
 
@@ -60,10 +60,10 @@ impl Component for Model {
                &mut self.results_total_health_remaining,
                &mut self.results_total_health_stats,
                &mut self.results_asym_wins,
-               &mut self.results_health_remaining_A,
-               &mut self.results_health_stats_A,
-               &mut self.results_health_remaining_D,
-               &mut self.results_health_stats_D,
+               &mut self.results_health_remaining_a,
+               &mut self.results_health_stats_a,
+               &mut self.results_health_remaining_d,
+               &mut self.results_health_stats_d,
                self.n,
             );
             true
@@ -76,14 +76,20 @@ impl Component for Model {
    }
 
    fn view(&self) -> Html {
-      let onclick = self.link.callback(|_| Msg::Compute);
+      let compute_go = self.link.callback(|_| Msg::Compute);
+      // let change_n = self.link.callback(|e| {
+      //    if
+      //    ));
+
       html! {
          <>
          <p>{ "Fight simulator for Widelands soldiers, v0.2 or so." }</p>
          <p>{ "Soldiers' stats are for max level, from Widelands v1.0" }</p>
          <div>
+            // <input type="number" pattern="[0-9]*" value={format!("{}",self.n)}/>
+            <input type="number" value={format!("{}",self.n)}/>
             <p>{ "Each pair will fight " } { self.n } {" times" }</p>
-            <button onclick={onclick}>{ "Fight!" }</button>
+            <button onclick={compute_go}>{ "Fight!" }</button>
          </div>
          <h1>{ "Equal fights" }</h1>
          <h2>{ "% win rate of row tribe vs column tribe" }</h2>
@@ -101,14 +107,14 @@ impl Component for Model {
          { results::results_table(self.results_asym_wins) }
 
          <h2>{ "% remaining health of row (aggressor)'s team" }</h2>
-         { results::results_table(self.results_health_remaining_A) }
+         { results::results_table(self.results_health_remaining_a) }
          <h2>{ "average remaining health of row (aggressor)'s survivors" }</h2>
-         { results::results_table(self.results_health_stats_A) }
+         { results::results_table(self.results_health_stats_a) }
 
          <h2>{ "% remaining health of column (defender)'s team" }</h2>
-         { results::results_table(self.results_health_remaining_D) }
+         { results::results_table(self.results_health_remaining_d) }
          <h2>{ "average remaining health of column (defender)'s survivors" }</h2>
-         { results::results_table(self.results_health_stats_D) }
+         { results::results_table(self.results_health_stats_d) }
          </>
       }
    }
