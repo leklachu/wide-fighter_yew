@@ -35,16 +35,55 @@ impl FightClub {
    }
 
    // parallel-fight them against each other, and enter results into table
-   pub fn fight_all_parallel(&self, data: &mut Data, n: i32) {
+   pub fn fight_all_parallel(
+      &self,
+      results_total_wins: &mut Data,
+      results_total_health_remaining: &mut Data,
+      results_total_health_stats: &mut Data,
+      results_asym_wins: &mut Data,
+      results_health_remaining_A: &mut Data,
+      results_health_stats_A: &mut Data,
+      results_health_remaining_D: &mut Data,
+      results_health_stats_D: &mut Data,
+      n: i32,
+   ) {
       for (i, j) in self.iter_fights() {
          // fight i vs j
          let outcome = fight::fight_parallel(self.0[i].soldier(), self.0[j].soldier(), n);
-         // put one way round into table
-         data[i][j] = Datum::Percent(outcome.s1_total_win_percent);
-         // if appropriate put other way round into table
-         if i != j {
-            data[j][i] = Datum::Percent(100.0 - outcome.s1_total_win_percent);
-         }
+
+         // Total Win Percent
+         results_total_wins[i][j] = Datum::Percent(outcome.s1_total_win_percent);
+         // if i != j {
+         results_total_wins[j][i] = Datum::Percent(100.0 - outcome.s1_total_win_percent);
+         // }
+
+         // Total health remaining
+         results_total_health_remaining[i][j] = Datum::Percent(outcome.s1_total_health_percent);
+         results_total_health_remaining[j][i] = Datum::Percent(outcome.s2_total_health_percent);
+
+         // Total health stats
+         results_total_health_stats[i][j] = Datum::Stat(outcome.s1_total_health_average);
+         results_total_health_stats[j][i] = Datum::Stat(outcome.s2_total_health_average);
+
+         // Asymmetric win percent
+         results_asym_wins[i][j] = Datum::Percent(outcome.s1_aggressor_win_percent);
+         results_asym_wins[j][i] = Datum::Percent(outcome.s2_aggressor_win_percent);
+
+         // Aggressors' Health remaining
+         results_health_remaining_A[i][j] = Datum::Percent(outcome.s1_aggressor_health_percent);
+         results_health_remaining_A[j][i] = Datum::Percent(outcome.s2_aggressor_health_percent);
+
+         // Aggressors' stats A
+         results_health_stats_A[i][j] = Datum::Stat(outcome.s1_aggressor_health_average);
+         results_health_stats_A[j][i] = Datum::Stat(outcome.s2_aggressor_health_average);
+
+         // Defenders' Health remaining B
+         results_health_remaining_D[i][j] = Datum::Percent(outcome.s1_defender_health_percent);
+         results_health_remaining_D[j][i] = Datum::Percent(outcome.s2_defender_health_percent);
+
+         // Defenders' Health stats B
+         results_health_stats_D[i][j] = Datum::Stat(outcome.s1_defender_health_average);
+         results_health_stats_D[j][i] = Datum::Stat(outcome.s2_defender_health_average);
       }
    }
 }

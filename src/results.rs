@@ -11,7 +11,7 @@ use yew::prelude::*;
 pub enum Datum {
    Nil,
    Num(i32),
-   Stat(f32, f32),
+   Stat((f32, f32)),
    Percent(f32),
 }
 
@@ -27,7 +27,7 @@ impl std::fmt::Display for Datum {
       match self {
          Datum::Nil => write!(f, "-"),
          Datum::Num(x) => write!(f, "{}", x),
-         Datum::Stat(m, s) => write!(f, "{}±{}", m, s),
+         Datum::Stat((m, s)) => write!(f, "{:.0}±{:.0}", m, s),
          Datum::Percent(x) => write!(f, "{:.1}%", x),
       }
    }
@@ -36,9 +36,8 @@ impl std::fmt::Display for Datum {
 // #[derive(Copy, Clone, Debug, PartialEq, Default)]
 pub type Data = [[Datum; FIGHT_QUANTITY]; FIGHT_QUANTITY];
 
-pub fn results_table(title: String, data: Data) -> Html {
+pub fn results_table(data: Data) -> Html {
    html! {
-      <div> <h2> {title} </h2>
       <table>
          <tr>
             <td></td>
@@ -98,7 +97,6 @@ pub fn results_table(title: String, data: Data) -> Html {
             <td> {data[5][5]} </td>
          </tr>
       </table>
-      </div>
    }
 }
 
