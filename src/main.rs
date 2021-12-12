@@ -80,6 +80,7 @@ impl Component for Model {
       html! {
          <>
          <p>{ "Fight simulator for Widelands soldiers, v0.2 or so." }</p>
+         <p>{ "Soldiers' stats are for max level, from Widelands v1.0" }</p>
          <div>
             <p>{ "Each pair will fight " } { self.n } {" times" }</p>
             <button onclick={onclick}>{ "Fight!" }</button>
@@ -106,7 +107,7 @@ impl Component for Model {
 
          <h2>{ "% remaining health of column (defender)'s tribe" }</h2>
          { results::results_table(self.results_health_remaining_D) }
-         <h2>{ "average remaining health of row (defender)'s tribe" }</h2>
+         <h2>{ "average remaining health of column (defender)'s tribe" }</h2>
          { results::results_table(self.results_health_stats_D) }
          </>
       }
