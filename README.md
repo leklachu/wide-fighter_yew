@@ -1,6 +1,8 @@
 Wide-fighter is a soldier fight simulator for widelands, similar to wl_soldiers
 (https://github.com/einstein13/wl_soldiers).
 
+[TODO] update this readme!
+
 Simulate many fights between soldiers of the different Widelands tribes to see
 which wins more, under various conditions.
 
