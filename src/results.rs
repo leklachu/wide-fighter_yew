@@ -1,5 +1,6 @@
 // use super::fightclub::FIGHT_QUANTITY;
-use super::soldiers::FIGHT_QUANTITY;
+use super::fightclub::FightClub;
+use super::soldiers::SoldierBase;
 use yew::prelude::*;
 
 /////////////////////
@@ -16,7 +17,6 @@ pub enum Datum {
 
 impl Default for Datum {
    fn default() -> Datum {
-      // Datum::Num(0)
       Datum::Nil
    }
 }
@@ -33,69 +33,35 @@ impl std::fmt::Display for Datum {
 }
 
 // #[derive(Copy, Clone, Debug, PartialEq, Default)]
-pub type Data = [[Datum; FIGHT_QUANTITY]; FIGHT_QUANTITY];
+// pub type Data = [[Datum; FIGHT_QUANTITY]; FIGHT_QUANTITY];
 
-pub fn results_table(data: Data) -> Html {
+// Data are passed as &[Datum], indexed as if [[Datum]], for element Data[row][column]
+
+pub fn results_table(data: &[Datum], club: &FightClub) -> Html {
+   let headrow = club.iter().map(|s| html! { <th> { s.name_html() } </th> });
+   let rows = club
+      .iter()
+      .zip(data.chunks(club.len()))
+      .map(|(s, dd)| rrow(s, dd));
+
    html! {
       <table>
          <tr>
             <td></td>
-            <th>{"Barbarians"}</th>
-            <th>{"Empire"}</th>
-            <th>{"Atlanteans"}</th>
-            <th>{"Frisians"}</th>
-            <th>{"Amazons"}</th>
-            <th>{"custom"}</th>
-         </tr><tr>
-            <th> {"Barbarians"} </th>
-            <td> {data[0][0]} </td>
-            <td> {data[0][1]} </td>
-            <td> {data[0][2]} </td>
-            <td> {data[0][3]} </td>
-            <td> {data[0][4]} </td>
-            <td> {data[0][5]} </td>
-         </tr><tr>
-            <th> {"Empire"} </th>
-            <td> {data[1][0]} </td>
-            <td> {data[1][1]} </td>
-            <td> {data[1][2]} </td>
-            <td> {data[1][3]} </td>
-            <td> {data[1][4]} </td>
-            <td> {data[1][5]} </td>
-         </tr><tr>
-            <th> {"Atlanteans"} </th>
-            <td> {data[2][0]} </td>
-            <td> {data[2][1]} </td>
-            <td> {data[2][2]} </td>
-            <td> {data[2][3]} </td>
-            <td> {data[2][4]} </td>
-            <td> {data[2][5]} </td>
-         </tr><tr>
-            <th> {"Frisians"} </th>
-            <td> {data[3][0]} </td>
-            <td> {data[3][1]} </td>
-            <td> {data[3][2]} </td>
-            <td> {data[3][3]} </td>
-            <td> {data[3][4]} </td>
-            <td> {data[3][5]} </td>
-         </tr><tr>
-            <th> {"Amazons"} </th>
-            <td> {data[4][0]} </td>
-            <td> {data[4][1]} </td>
-            <td> {data[4][2]} </td>
-            <td> {data[4][3]} </td>
-            <td> {data[4][4]} </td>
-            <td> {data[4][5]} </td>
-         </tr><tr>
-            <th> {"custom"} </th>
-            <td> {data[5][0]} </td>
-            <td> {data[5][1]} </td>
-            <td> {data[5][2]} </td>
-            <td> {data[5][3]} </td>
-            <td> {data[5][4]} </td>
-            <td> {data[5][5]} </td>
+            { headrow.collect::<Html>() }
          </tr>
+         { rows.collect::<Html>() }
       </table>
+   }
+}
+
+fn rrow(c: &SoldierBase, dd: &[Datum]) -> Html {
+   let row = dd.iter().map(|d| html! { <td> { d } </td> });
+   html! {
+      <tr>
+         <th>{ c.name_long() }</th>
+         { row.collect::<Html>() }
+      </tr>
    }
 }
 

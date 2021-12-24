@@ -1,9 +1,11 @@
 // The Soldiers, their tribes and statistics.
 // Making a club of them is in fightclub
 
+use yew::prelude::*;
+
 // How many tribes are there to fight?
 // (used across multiple modules; should be here or in fightclub.rs I guess
-pub const FIGHT_QUANTITY: usize = 6;
+// pub const FIGHT_QUANTITY: usize = 6;
 
 #[derive(Debug, Copy, Clone)]
 pub enum Tribe {
@@ -12,7 +14,15 @@ pub enum Tribe {
    Atlantean,
    Frisian,
    Amazon,
-   Custom,
+   _Custom,
+}
+
+#[derive(Debug, Copy, Clone)]
+pub enum Param {
+   Attack,
+   Defence,
+   Health,
+   Evade,
 }
 
 /////////////////////////////////////////
@@ -21,17 +31,17 @@ pub enum Tribe {
 
 #[derive(Debug, Copy, Clone)]
 pub struct SoldierBase {
-   params: SoldierType,
-   tribe: Tribe,
-   levels: Levels,
+   pub params: SoldierType,
+   pub tribe: Tribe,
+   pub levels: Levels,
 }
 
 #[derive(Debug, Copy, Clone)]
-struct Levels {
-   health: u8,
-   attack: u8,
-   defence: u8,
-   evade: u8,
+pub struct Levels {
+   pub health: u8,
+   pub attack: u8,
+   pub defence: u8,
+   pub evade: u8,
 }
 
 impl SoldierBase {
@@ -57,7 +67,7 @@ impl SoldierBase {
          Tribe::Atlantean => ATLANTEAN,
          Tribe::Frisian => FRISIAN,
          Tribe::Amazon => AMAZON,
-         Tribe::Custom => AMAZON,
+         Tribe::_Custom => AMAZON,
       };
       SoldierBase {
          params,
@@ -73,6 +83,61 @@ impl SoldierBase {
          self.levels.attack as i32,
          self.levels.defence as i32,
          self.levels.evade as i32,
+      )
+   }
+
+   pub fn name(&self) -> String {
+      let base = match self.tribe {
+         Tribe::Barbarian => "Barbarians",
+         Tribe::Empire => "Empire",
+         Tribe::Atlantean => "Atlanteans",
+         Tribe::Frisian => "Frisians",
+         Tribe::Amazon => "Amazons",
+         Tribe::_Custom => "custom",
+      };
+      format!("{}", base)
+   }
+
+   pub fn name_html(&self) -> Html {
+      html! {
+         <div> { self.name() }
+         <table>
+            <tr>
+               <td>{self.levels.attack}</td>
+               <td>{self.levels.defence}</td>
+            </tr><tr>
+               <td>{self.levels.health}</td>
+               <td>{self.levels.evade}</td>
+            </tr>
+         </table>
+         </div>
+      }
+   }
+
+   pub fn _name_html_long(&self) -> Html {
+      html! {
+         <table>
+            <tr>
+               <td></td>
+               <td>{self.levels.attack}</td>
+               <td>{self.levels.defence}</td>
+            </tr><tr>
+               <td>{self.name()}</td>
+               <td>{self.levels.health}</td>
+               <td>{self.levels.evade}</td>
+            </tr>
+         </table>
+      }
+   }
+
+   pub fn name_long(&self) -> String {
+      format!(
+         "{} {},{},{},{}",
+         self.name(),
+         self.levels.attack,
+         self.levels.defence,
+         self.levels.health,
+         self.levels.evade
       )
    }
 }

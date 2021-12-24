@@ -4,15 +4,12 @@ use rand::rngs::SmallRng;
 use rand::{Rng, SeedableRng};
 
 /// Simulate many parallel fights and return mean,stdev of remaining health for each team.
-/// half the fights start with s1, half with s2, and wins and survivors' statistics are printed.
+/// half the fights start with s1, half with s2, and wins and survivors' statistics are returned
 pub fn fight_parallel(
    s1: soldiers::Soldier,
-   // s1_name: String,
    s2: soldiers::Soldier,
-   // s2_name: String,
    n: i32,
 ) -> results::ParallelFight {
-   // ) -> (Vec<u16>, Vec<u16>, Vec<u16>, Vec<u16>) {
    // results only handles maximum health <= 65536. Fine for now so just check and panic
    if (s1.health > 65536) || (s2.health > 65536) {
       panic!();
@@ -58,14 +55,21 @@ pub fn fight_parallel(
    let stats = |survivors: &Vec<u16>, base_health: i32| {
       let health_total: u64 = survivors.iter().map(|h| (*h as u64)).sum();
       let health_total_percent = health_total as f32 * 200.0 / n as f32 / base_health as f32;
-      let health_mean: i32 =
-         (survivors.iter().map(|h| (*h as u64)).sum::<u64>() / (survivors.len() as u64)) as i32;
-      let health_stdev = ((survivors
-         .iter()
-         .map(|h| (*h as i64 - health_mean as i64).pow(2))
-         .sum::<i64>() as f32)
-         / (survivors.len() as f32 - 1.0))
-         .sqrt();
+      let health_mean: i32 = if survivors.len() > 0 {
+         (survivors.iter().map(|h| (*h as u64)).sum::<u64>() / (survivors.len() as u64)) as i32
+      } else {
+         0
+      };
+      let health_stdev = if survivors.len() > 0 {
+         ((survivors
+            .iter()
+            .map(|h| (*h as i64 - health_mean as i64).pow(2))
+            .sum::<i64>() as f32)
+            / (survivors.len() as f32 - 1.0))
+            .sqrt()
+      } else {
+         0.0
+      };
 
       // println!(
       // "{} remaining health: army total {:.1}%, individual average {} +- {:.0}",
@@ -80,13 +84,21 @@ pub fn fight_parallel(
       let survivors_len = survivors_a.len() + survivors_b.len();
       let health_total: u64 = survivors.map(|h| (*h as u64)).sum();
       let health_total_percent = health_total as f32 * 100.0 / n as f32 / base_health as f32;
-      let health_mean: i32 = (health_total / (survivors_len as u64)) as i32;
+      let health_mean: i32 = if survivors_len > 0 {
+         (health_total / (survivors_len as u64)) as i32
+      } else {
+         0
+      };
       let survivors = survivors_a.iter().chain(survivors_b.iter());
-      let health_stdev = ((survivors
-         .map(|h| (*h as i64 - health_mean as i64).pow(2))
-         .sum::<i64>() as f32)
-         / (survivors_len as f32 - 1.0))
-         .sqrt();
+      let health_stdev = if survivors_len > 0 {
+         ((survivors
+            .map(|h| (*h as i64 - health_mean as i64).pow(2))
+            .sum::<i64>() as f32)
+            / (survivors_len as f32 - 1.0))
+            .sqrt()
+      } else {
+         0.0
+      };
 
       // println!(
       //    "{} remaining health: army total {:.1}%, individual average {} +- {:.0}",
