@@ -157,7 +157,7 @@ impl Component for Model {
 
          <h2>{ "The soldiers to fight" }</h2>
          // The customisable fight club
-         <table><tr>
+         <table class="fight_club"><tr>
             { fc_display.collect::<Html>() }
             <td><table>
                <tr><td><button onclick={add_barbarian}>{ "+ Barbarian" }</button></td></tr>
