@@ -1,18 +1,43 @@
 /* main style sheet for wide-fighter */
 
 body {
-    background-color: blanchedalmond;
+    //background-color: blanchedalmond;
+    display: flex;
+    flex-flow: row wrap;
 }
 
-h2 {
-  color: red;
+header, nav, nav a, article, aside, footer {
+  flex: 1 100%;
+}
+
+header {
+    background-color: blanchedalmond;
+    padding: 1em;
+}
+
+article {
+    border: 1px solid red;
+    margin: 1em;
+}
+
+article.result {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+section {
+    border: 1px solid blue;
+    margin: 1em;
 }
 
 table, td, th {
     border-collapse: collapse;
-    border: 1px solid brown;
+    border: 1px solid;
+    padding: 0.3em 0.5em;
 }
-
+.result td, th {
+    width: 10em;
+}
 button {
     margin: 0 5px;
 }

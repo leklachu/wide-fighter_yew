@@ -151,10 +151,13 @@ impl Component for Model {
          .map(|(s, i): (&soldiers::SoldierBase, usize)| soldier_item(s, i, &link.clone()));
 
       html! {
-         <>
-         <p>{ "Fight simulator for Widelands soldiers, v0.3 or so." }</p>
+        <>
+         <header>
+         <h1>{ "Fight simulator for Widelands soldiers, v0.3 or so." }</h1>
          <p>{ "Soldiers' stats are for max level, from Widelands v1.0" }</p>
+         </header>
 
+         <article class="fight_club">
          <h2>{ "The soldiers to fight" }</h2>
          // The customisable fight club
          <table class="fight_club"><tr>
@@ -168,7 +171,6 @@ impl Component for Model {
             </table></td>
          </tr></table>
 
-
          // Fighting how many times
          <div>
             <p>{ "Each pair will fight " }
@@ -177,32 +179,61 @@ impl Component for Model {
             </p>
             <button onclick={compute_go}>{ "Fight!" }</button>
          </div>
+         </article>
 
          // Results
+         <article>
          <h1>{ "Equal fights" }</h1>
+         <article class="result">
+         <section>
          <h2>{ "% win rate of row tribe vs column tribe" }</h2>
          { results::results_table(self.results_total_wins.as_slice(), fc) }
+         </section>
+
+         <section>
          <h2>{ "% health remaining of row's team" }</h2>
          { results::results_table(self.results_total_health_remaining.as_slice(), fc) }
+         </section>
+
+         <section>
          <h2>{ "average health remaining of row's surviving soldiers" }</h2>
          <p>{ "(for reference, max level Barbarians start at 22000)" }</p>
          { results::results_table(self.results_total_health_stats.as_slice(), fc) }
+         </section>
+         </article>
 
          <h1>{ "Asymmetric" }</h1>
          <p>{ "(row tribe always hits first)" }</p>
 
+         <article class="result">
+         <section>
          <h2>{ "% win rate of row tribe vs column tribe" }</h2>
          { results::results_table(self.results_asym_wins.as_slice(), fc) }
+         </section>
 
+         <section>
          <h2>{ "% remaining health of row (aggressor)'s team" }</h2>
          { results::results_table(self.results_health_remaining_a.as_slice(), fc) }
+         </section>
+
+         <section>
          <h2>{ "average remaining health of row (aggressor)'s survivors" }</h2>
          { results::results_table(self.results_health_stats_a.as_slice(), fc) }
+         </section>
+
+         <section>
 
          <h2>{ "% remaining health of column (defender)'s team" }</h2>
          { results::results_table(self.results_health_remaining_d.as_slice(), fc) }
+         </section>
+
+         <section>
          <h2>{ "average remaining health of column (defender)'s survivors" }</h2>
          { results::results_table(self.results_health_stats_d.as_slice(), fc) }
+         </section>
+
+         </article>
+         </article>
          </>
       }
    }

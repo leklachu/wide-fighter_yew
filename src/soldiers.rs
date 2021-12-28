@@ -140,6 +140,14 @@ impl SoldierBase {
          self.levels.evade
       )
    }
+   pub fn name_break(&self) -> Html {
+      html! {<th> {self.name()}<br/>
+         {self.levels.attack}{", "}
+         {self.levels.defence}{", "} 
+         {self.levels.health}{", "}
+         {self.levels.evade} </th>
+      }
+   }
 }
 
 ///////////////////////

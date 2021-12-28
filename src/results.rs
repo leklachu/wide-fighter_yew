@@ -38,16 +38,16 @@ impl std::fmt::Display for Datum {
 // Data are passed as &[Datum], indexed as if [[Datum]], for element Data[row][column]
 
 pub fn results_table(data: &[Datum], club: &FightClub) -> Html {
-   let headrow = club.iter().map(|s| html! { <th> { s.name_html() } </th> });
+   let headrow = club.iter().map(|s| html! { s.name_two_lines() } );
    let rows = club
       .iter()
       .zip(data.chunks(club.len()))
       .map(|(s, dd)| rrow(s, dd));
 
    html! {
-      <table class="result">
+      <table>
          <tr>
-            <td></td>
+            <th></th>
             { headrow.collect::<Html>() }
          </tr>
          { rows.collect::<Html>() }
