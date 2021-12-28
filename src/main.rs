@@ -182,57 +182,71 @@ impl Component for Model {
          </article>
 
          // Results
-         <article>
+         <article class="result-equal">
          <h1>{ "Equal fights" }</h1>
-         <article class="result">
          <section>
-         <h2>{ "% win rate of row tribe vs column tribe" }</h2>
-         { results::results_table(self.results_total_wins.as_slice(), fc) }
-         </section>
 
-         <section>
-         <h2>{ "% health remaining of row's team" }</h2>
-         { results::results_table(self.results_total_health_remaining.as_slice(), fc) }
-         </section>
+         <table>
+            <caption>{ "% win rate of row tribe vs column tribe" }</caption>
+            { results::results_table(self.results_total_wins.as_slice(), fc) }
+         </table>
 
-         <section>
-         <h2>{ "average health remaining of row's surviving soldiers" }</h2>
-         <p>{ "(for reference, max level Barbarians start at 22000)" }</p>
+         <table>
+             <caption>{ "% health remaining of row's team" }</caption>
+             { results::results_table(self.results_total_health_remaining.as_slice(), fc) }
+         </table>
+
+         <table>
+            <caption>
+                { "average health remaining of row's surviving soldiers" }<br/>
+                <span class="small">{ "(for reference, max level Barbarians start at 22000)" }</span>
+            </caption>
          { results::results_table(self.results_total_health_stats.as_slice(), fc) }
+         </table>
          </section>
          </article>
 
+         <article class="result-asym">
          <h1>{ "Asymmetric" }</h1>
          <p>{ "(row tribe always hits first)" }</p>
 
-         <article class="result">
-         <section>
-         <h2>{ "% win rate of row tribe vs column tribe" }</h2>
-         { results::results_table(self.results_asym_wins.as_slice(), fc) }
-         </section>
-
-         <section>
-         <h2>{ "% remaining health of row (aggressor)'s team" }</h2>
-         { results::results_table(self.results_health_remaining_a.as_slice(), fc) }
-         </section>
-
-         <section>
-         <h2>{ "average remaining health of row (aggressor)'s survivors" }</h2>
-         { results::results_table(self.results_health_stats_a.as_slice(), fc) }
-         </section>
-
          <section>
 
-         <h2>{ "% remaining health of column (defender)'s team" }</h2>
-         { results::results_table(self.results_health_remaining_d.as_slice(), fc) }
-         </section>
+         <table>
+            <caption>
+                { "% win rate of row tribe vs column tribe" }
+            </caption>
+            { results::results_table(self.results_asym_wins.as_slice(), fc) }
+         </table>
 
-         <section>
-         <h2>{ "average remaining health of column (defender)'s survivors" }</h2>
-         { results::results_table(self.results_health_stats_d.as_slice(), fc) }
-         </section>
+         <table>
+            <caption>
+                { "% remaining health of row (aggressor)'s team" }
+            </caption>
+            { results::results_table(self.results_health_remaining_a.as_slice(), fc) }
+         </table>
 
-         </article>
+         <table>
+            <caption>
+                { "average remaining health of row (aggressor)'s survivors" }
+            </caption>
+            { results::results_table(self.results_health_stats_a.as_slice(), fc) }
+         </table>
+
+         <table>
+            <caption>
+                { "% remaining health of column (defender)'s team" }
+            </caption>
+            { results::results_table(self.results_health_remaining_d.as_slice(), fc) }
+         </table>
+
+         <table>
+            <caption>
+                { "average remaining health of column (defender)'s survivors" }
+            </caption>
+            { results::results_table(self.results_health_stats_d.as_slice(), fc) }
+         </table>
+         </section>
          </article>
          </>
       }

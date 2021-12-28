@@ -45,13 +45,13 @@ pub fn results_table(data: &[Datum], club: &FightClub) -> Html {
       .map(|(s, dd)| rrow(s, dd));
 
    html! {
-      <table>
+        <>
          <tr>
             <th></th>
             { headrow.collect::<Html>() }
          </tr>
          { rows.collect::<Html>() }
-      </table>
+        </>
    }
 }
 

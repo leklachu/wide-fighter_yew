@@ -6,7 +6,7 @@ body {
     flex-flow: row wrap;
 }
 
-header, nav, nav a, article, aside, footer {
+header, article {
   flex: 1 100%;
 }
 
@@ -16,28 +16,57 @@ header {
 }
 
 article {
-    border: 1px solid red;
-    margin: 1em;
+    margin-bottom: 1em;
+}
+article.result-equal{
+    background-color: LightYellow;
 }
 
-article.result {
+article.result-asym {
+    background-color: LemonChiffon;
+}
+
+section {
+    //border: 1px solid blue;
     display: flex;
     flex-flow: row wrap;
 }
 
-section {
-    border: 1px solid blue;
-    margin: 1em;
+section table {
+    width: 33%;
+    table-layout: fixed;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    border: 1px solid;
 }
 
 table, td, th {
     border-collapse: collapse;
-    border: 1px solid;
     padding: 0.3em 0.5em;
 }
-.result td, th {
-    width: 10em;
+
+th {
+    font-weight: normal;
 }
+
+tr td {
+    text-align: right;
+}
+td {
+    text-align: left;
+}
+
+caption {
+    font-weight: bold;
+    border: 1px solid;
+    border-bottom: None;
+    padding: 1em 0;
+}
+
+.small {
+    font-weight: normal;
+}
+
 button {
     margin: 0 5px;
 }

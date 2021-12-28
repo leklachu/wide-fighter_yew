@@ -140,10 +140,10 @@ impl SoldierBase {
          self.levels.evade
       )
    }
-   pub fn name_break(&self) -> Html {
+   pub fn name_two_lines(&self) -> Html {
       html! {<th> {self.name()}<br/>
          {self.levels.attack}{", "}
-         {self.levels.defence}{", "} 
+         {self.levels.defence}{", "}
          {self.levels.health}{", "}
          {self.levels.evade} </th>
       }
