@@ -98,7 +98,7 @@ impl SoldierBase {
       format!("{}", base)
    }
 
-   pub fn name_html(&self) -> Html {
+   pub fn _name_html(&self) -> Html {
       html! {
          <div> { self.name() }
          <table>
