@@ -1,7 +1,10 @@
 /* main style sheet for wide-fighter */
 
+$bg_clr: blanchedalmond;
+$table_bg_clr: #e5e4e4;
+$table_line_clr: #a1a1a1;
+
 body {
-    //background-color: blanchedalmond;
     display: flex;
     flex-flow: row wrap;
 }
@@ -11,32 +14,29 @@ header, article {
 }
 
 header {
-    background-color: blanchedalmond;
+    background-color: $bg_clr;
     padding: 1em;
 }
 
 article {
     margin-bottom: 1em;
-}
-article.result-equal{
-    background-color: LightYellow;
+    padding: 1em;
 }
 
-article.result-asym {
-    background-color: LemonChiffon;
+.results{
+    background-color: $bg_clr;
 }
 
 section {
-    //border: 1px solid blue;
     display: flex;
     flex-flow: row wrap;
+    gap: 1em 1em;
 }
 
-section table {
-    table-layout: fixed;
-    margin-right: 1em;
-    margin-bottom: 1em;
-    border: 1px solid;
+.results-table {
+    box-shadow: 5px 5px 5px grey;
+    background-color: $table_bg_clr;
+    border-radius: 8px;
 }
 
 table, td, th {
@@ -44,22 +44,29 @@ table, td, th {
     padding: 0.3em 0.5em;
 }
 
+caption {
+    font-weight: bold;
+    padding: 1em 0;
+}
+
 th {
     font-weight: normal;
 }
 
-tr td {
+.results td {
     text-align: right;
-}
-td {
-    text-align: left;
+    width: 5em;
+    border-top: 1px solid $table_line_clr;
 }
 
-caption {
-    font-weight: bold;
-    border: 1px solid;
-    border-bottom: None;
-    padding: 1em 0;
+.results th:first-child {
+    text-align: left;
+    border-right: 1px solid $table_line_clr;
+}
+
+/* Keep this below th:first-child */
+.results th:empty {
+    border: none;
 }
 
 .small {

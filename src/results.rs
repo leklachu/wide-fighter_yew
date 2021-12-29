@@ -59,7 +59,7 @@ fn rrow(c: &SoldierBase, dd: &[Datum]) -> Html {
    let row = dd.iter().map(|d| html! { <td> { d } </td> });
    html! {
       <tr>
-         <th>{ c.name_long() }</th>
+         { c.name_two_lines() }
          { row.collect::<Html>() }
       </tr>
    }

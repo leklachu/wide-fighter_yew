@@ -182,20 +182,24 @@ impl Component for Model {
          </article>
 
          // Results
-         <article class="result-equal">
+         <article class="results">
          <h1>{ "Equal fights" }</h1>
          <section>
-
+         <div class="results-table">
          <table>
             <caption>{ "% win rate of row tribe vs column tribe" }</caption>
             { results::results_table(self.results_total_wins.as_slice(), fc) }
          </table>
+         </div>
 
+         <div class="results-table">
          <table>
              <caption>{ "% health remaining of row's team" }</caption>
              { results::results_table(self.results_total_health_remaining.as_slice(), fc) }
          </table>
+         </div>
 
+         <div class="results-table">
          <table>
             <caption>
                 { "average health remaining of row's surviving soldiers" }<br/>
@@ -203,49 +207,62 @@ impl Component for Model {
             </caption>
          { results::results_table(self.results_total_health_stats.as_slice(), fc) }
          </table>
+         </div>
+
          </section>
          </article>
 
-         <article class="result-asym">
+         <article class="results">
          <h1>{ "Asymmetric" }</h1>
          <p>{ "(row tribe always hits first)" }</p>
 
          <section>
 
+         <div class="results-table">
          <table>
             <caption>
                 { "% win rate of row tribe vs column tribe" }
             </caption>
             { results::results_table(self.results_asym_wins.as_slice(), fc) }
          </table>
+         </div>
 
+         <div class="results-table">
          <table>
             <caption>
                 { "% remaining health of row (aggressor)'s team" }
             </caption>
             { results::results_table(self.results_health_remaining_a.as_slice(), fc) }
          </table>
+         </div>
 
+         <div class="results-table">
          <table>
             <caption>
                 { "average remaining health of row (aggressor)'s survivors" }
             </caption>
             { results::results_table(self.results_health_stats_a.as_slice(), fc) }
          </table>
+         </div>
 
+         <div class="results-table">
          <table>
             <caption>
                 { "% remaining health of column (defender)'s team" }
             </caption>
             { results::results_table(self.results_health_remaining_d.as_slice(), fc) }
          </table>
+         </div>
 
+         <div class="results-table">
          <table>
             <caption>
                 { "average remaining health of column (defender)'s survivors" }
             </caption>
             { results::results_table(self.results_health_stats_d.as_slice(), fc) }
          </table>
+         </div>
+
          </section>
          </article>
          </>
