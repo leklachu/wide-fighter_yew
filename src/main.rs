@@ -198,7 +198,7 @@ impl Component for Model {
 
          <div class="results-table">
              { results::results_table(
-             "% health remaining of row's team", "", 
+             "% health remaining of row's team", "",
              self.results_total_health_remaining.as_slice(),
              fc) }
          </div>

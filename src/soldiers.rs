@@ -130,16 +130,6 @@ impl SoldierBase {
       }
    }
 
-   pub fn name_long(&self) -> String {
-      format!(
-         "{} {},{},{},{}",
-         self.name(),
-         self.levels.attack,
-         self.levels.defence,
-         self.levels.health,
-         self.levels.evade
-      )
-   }
    pub fn name_two_lines(&self) -> Html {
       html! { <>{self.name()}<br/>
          <span class="small">
