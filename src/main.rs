@@ -186,7 +186,8 @@ impl Component for Model {
 
          // Results
          <article class="results">
-         <h1>{ "Equal fights" }</h1>
+         <h1>{ "Results" }</h1>
+         <h2>{ "Equal fights" }</h2>
          <section>
          <div class="results-table">
             { results::results_table(
@@ -213,10 +214,8 @@ impl Component for Model {
          </div>
 
          </section>
-         </article>
 
-         <article class="results">
-         <h1>{ "Asymmetric" }</h1>
+         <h2>{ "Asymmetric" }</h2>
          <p>{ "(row tribe always hits first)" }</p>
 
          <section>
@@ -291,14 +290,22 @@ fn soldier_item(s: &soldiers::SoldierBase, i: usize, link: &yew::html::Scope<Mod
         </tr>
          // <tr><td>{ "+ per level: " }{s.params.attack_incr}</td></tr>
          <tr>
+            if (s.params.attack_lvls > 0) && (!s.name().starts_with("_")){
             <th>{ "+" }{s.params.attack_incr}{" per lvl, "}</th>
-            <td class="but_td">
-                <button onclick={attack_down}>{ "–" }</button>
-                <span class="values">
-                {s.levels.attack}{" / "}{s.params.attack_lvls}
-                </span>
-                <button onclick={attack_up}>{ "+" }</button>
-             </td>
+                <td class="but_td">
+                    <button onclick={attack_down}>{ "–" }</button>
+                    <span class="values">
+                    {s.levels.attack}{" / "}{s.params.attack_lvls}
+                    </span>
+                    <button onclick={attack_up}>{ "+" }</button>
+                </td>
+            }
+            else {
+                <th></th>
+                <td>
+                    { format!("{} can't be trained in Attack", s.name()) }
+                </td>
+            }
         </tr>
 
          <tr>
@@ -307,14 +314,22 @@ fn soldier_item(s: &soldiers::SoldierBase, i: usize, link: &yew::html::Scope<Mod
          </tr>
          // <tr><td>{ "+ per level: " }{s.params.defence_incr}</td></tr>
          <tr>
+            if (s.params.defence_lvls > 0) && (!s.name().starts_with("_")) {
             <th>{ "+" }{s.params.defence_incr}{" per lvl, "}</th>
-            <td class="but_td">
-                <button onclick={defence_down}>{ "–" }</button>
-                <span class="values">
-                {s.levels.defence}{" / " }{s.params.defence_lvls}
-                </span>
-                <button onclick={defence_up}>{ "+" }</button>
-            </td>
+                <td class="but_td">
+                    <button onclick={defence_down}>{ "–" }</button>
+                    <span class="values">
+                    {s.levels.defence}{" / " }{s.params.defence_lvls}
+                    </span>
+                    <button onclick={defence_up}>{ "+" }</button>
+                </td>
+            }
+            else {
+                <th></th>
+                <td class="small">
+                    { format!("{} can't be trained in defense", s.name()) }
+                </td>
+            }
          </tr>
 
          <tr>
@@ -323,14 +338,22 @@ fn soldier_item(s: &soldiers::SoldierBase, i: usize, link: &yew::html::Scope<Mod
          // <tr><td>{ "+ per level: " }{s.params.health_incr}</td></tr>
          </tr>
          <tr>
+            if (s.params.health_lvls > 0) && (!s.name().starts_with("_")) {
             <th>{ "+" }{s.params.health_incr}{" per lvl, "}</th>
-            <td class="but_td">
-                <button onclick={health_down}>{ "–" }</button>
-                <span class="values">
-                {s.levels.health}{" / "}{s.params.health_lvls}
-                </span>
-                <button onclick={health_up}>{ "+" }</button>
-            </td>
+                <td class="but_td">
+                    <button onclick={health_down}>{ "–" }</button>
+                    <span class="values">
+                    {s.levels.health}{" / "}{s.params.health_lvls}
+                    </span>
+                    <button onclick={health_up}>{ "+" }</button>
+                </td>
+            }
+            else {
+                <th></th>
+                <td class="small">
+                    { format!("{} can't be trained in health", s.name()) }
+                </td>
+            }
          </tr>
 
          <tr>
@@ -339,14 +362,22 @@ fn soldier_item(s: &soldiers::SoldierBase, i: usize, link: &yew::html::Scope<Mod
         </tr>
          // <tr><td>{ "+ per level: " }{s.params.evade_incr}</td></tr>
          <tr>
+            if (s.params.evade_lvls > 0) && (!s.name().starts_with("_")) {
             <th>{ "+" }{s.params.evade_incr}{" per lvl, "}</th>
-            <td class="but_td">
-                <button onclick={evade_down}>{ "–" }</button>
-                <span class="values">
-                {s.levels.evade}{" / "}{s.params.evade_lvls}
-                </span>
-                <button onclick={evade_up}>{ "+" }</button>
-            </td>
+                <td class="but_td">
+                    <button onclick={evade_down}>{ "–" }</button>
+                    <span class="values">
+                    {s.levels.evade}{" / "}{s.params.evade_lvls}
+                    </span>
+                    <button onclick={evade_up}>{ "+" }</button>
+                </td>
+            }
+            else {
+                <th></th>
+                <td class="small">
+                    { format!("{} can't be trained in evade", s.name()) }
+                </td>
+            }
          </tr>
 
 
