@@ -23,6 +23,14 @@ article {
     padding: 1em;
 }
 
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
 .results{
     background-color: $bg_clr;
 }
@@ -33,10 +41,11 @@ section {
     gap: 1em 1em;
 }
 
-.results-table {
+.results-table, .fight-club {
     box-shadow: 5px 5px 5px grey;
     background-color: $table_bg_clr;
     border-radius: 8px;
+    display: flex;
 }
 
 table, td, th {
@@ -53,26 +62,59 @@ th {
     font-weight: normal;
 }
 
-.results td {
+td {
     text-align: right;
     width: 5em;
     border-top: 1px solid $table_line_clr;
 }
 
-.results th:first-child {
+th:first-child {
     text-align: left;
     border-right: 1px solid $table_line_clr;
 }
 
-/* Keep this below th:first-child */
 .results th:empty {
     border: none;
 }
 
+.fight-club.new-tribe {
+   align-items: self-start;
+}
+.fight-club.new-tribe td {
+    border: none;
+}
+
+.fight-club.new-tribe button {
+    width: 10em;
+}
+
+.fight-club tr:nth-child(odd) th {
+    border-bottom: 1px solid #a1a1a1;
+}
+
 .small {
     font-weight: normal;
+    font-size: smaller;
+    text-align: center;
 }
 
 button {
-    margin: 0 5px;
+    margin: 0 4px;
+    font-weight: bold;
+}
+
+.but_td {
+    width: 7em;
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+}
+
+.values {
+    //background-color: white;
+}
+
+.fight-club td.rem_but {
+    text-align: center;
+    vertical-align: bottom;
 }

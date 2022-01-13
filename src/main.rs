@@ -157,24 +157,27 @@ impl Component for Model {
          <p>{ "Soldiers' stats are for max level, from Widelands v1.0" }</p>
          </header>
 
-         <article class="fight_club">
+         <article>
          <h2>{ "The soldiers to fight" }</h2>
+         <section>
          // The customisable fight club
-         <table class="fight_club"><tr>
             { fc_display.collect::<Html>() }
-            <td><table>
+         <div class="fight-club new-tribe">
+            <table>
+               <caption>{ "New" }</caption>
                <tr><td><button onclick={add_barbarian}>{ "+ Barbarian" }</button></td></tr>
                <tr><td><button onclick={add_empire}>{ "+ Empire" }</button></td></tr>
                <tr><td><button onclick={add_atlantean}>{ "+ Atlantean" }</button></td></tr>
                <tr><td><button onclick={add_frisian}>{ "+ Frisian" }</button></td></tr>
                <tr><td><button onclick={add_amazon}>{ "+ Amazon" }</button></td></tr>
-            </table></td>
-         </tr></table>
+            </table>
+        </div>
+         </section>
 
          // Fighting how many times
          <div>
             <p>{ "Each pair will fight " }
-               <button onclick={n_minus}>{ "-" }</button> { self.n }
+               <button onclick={n_minus}>{ "–" }</button> { self.n }
                <button onclick={n_plus}>{ "+" }</button> {" times" }
             </p>
             <button onclick={compute_go}>{ "Fight!" }</button>
@@ -183,84 +186,76 @@ impl Component for Model {
 
          // Results
          <article class="results">
-         <h1>{ "Equal fights" }</h1>
+         <h1>{ "Results" }</h1>
+         <h2>{ "Equal fights" }</h2>
          <section>
          <div class="results-table">
-         <table>
-            <caption>{ "% win rate of row tribe vs column tribe" }</caption>
-            { results::results_table(self.results_total_wins.as_slice(), fc) }
-         </table>
+            { results::results_table(
+                "% win rate of row tribe vs column tribe", "",
+                self.results_total_wins.as_slice(),
+                fc)
+            }
          </div>
 
          <div class="results-table">
-         <table>
-             <caption>{ "% health remaining of row's team" }</caption>
-             { results::results_table(self.results_total_health_remaining.as_slice(), fc) }
-         </table>
+             { results::results_table(
+             "% health remaining of row's team", "",
+             self.results_total_health_remaining.as_slice(),
+             fc) }
          </div>
 
          <div class="results-table">
-         <table>
-            <caption>
-                { "average health remaining of row's surviving soldiers" }<br/>
-                <span class="small">{ "(for reference, max level Barbarians start at 22000)" }</span>
-            </caption>
-         { results::results_table(self.results_total_health_stats.as_slice(), fc) }
-         </table>
+            { results::results_table(
+                "average health remaining of row's surviving soldiers",
+                "(for reference, max level Barbarians start at 22000)",
+                self.results_total_health_stats.as_slice(),
+                fc)
+            }
          </div>
 
          </section>
-         </article>
 
-         <article class="results">
-         <h1>{ "Asymmetric" }</h1>
+         <h2>{ "Asymmetric" }</h2>
          <p>{ "(row tribe always hits first)" }</p>
 
          <section>
 
          <div class="results-table">
-         <table>
-            <caption>
-                { "% win rate of row tribe vs column tribe" }
-            </caption>
-            { results::results_table(self.results_asym_wins.as_slice(), fc) }
-         </table>
+            { results::results_table(
+                "% win rate of row tribe vs column tribe", "",
+                self.results_asym_wins.as_slice(),
+                fc)
+            }
          </div>
 
          <div class="results-table">
-         <table>
-            <caption>
-                { "% remaining health of row (aggressor)'s team" }
-            </caption>
-            { results::results_table(self.results_health_remaining_a.as_slice(), fc) }
-         </table>
+            { results::results_table(
+                "% remaining health of row (aggressor)'s team", "",
+                self.results_health_remaining_a.as_slice(),
+                fc)
+            }
          </div>
 
          <div class="results-table">
-         <table>
-            <caption>
-                { "average remaining health of row (aggressor)'s survivors" }
-            </caption>
-            { results::results_table(self.results_health_stats_a.as_slice(), fc) }
-         </table>
+            { results::results_table(
+                "average remaining health of row (aggressor)'s survivors", "",
+                self.results_health_stats_a.as_slice(),
+                fc)
+            }
          </div>
 
          <div class="results-table">
-         <table>
-            <caption>
-                { "% remaining health of column (defender)'s team" }
-            </caption>
-            { results::results_table(self.results_health_remaining_d.as_slice(), fc) }
-         </table>
+            { results::results_table(
+                "% remaining health of column (defender)'s team", "",
+                self.results_health_remaining_d.as_slice(),fc)
+            }
          </div>
 
          <div class="results-table">
-         <table>
-            <caption>
-                { "average remaining health of column (defender)'s survivors" }
-            </caption>
-            { results::results_table(self.results_health_stats_d.as_slice(), fc) }
-         </table>
+            { results::results_table(
+                "average remaining health of column (defender)'s survivors", "",
+                self.results_health_stats_d.as_slice(),fc)
+            }
          </div>
 
          </section>
@@ -286,47 +281,109 @@ fn soldier_item(s: &soldiers::SoldierBase, i: usize, link: &yew::html::Scope<Mod
    let evade_down = link.callback(move |_| Msg::LvlDown(i, Param::Evade));
 
    html! {
-      <td><table>
-         <tr><td>{ s.name_long() }</td></tr>
-         <tr><td>{ "Base attack: " }{s.params.attack_base}{"-"}{s.params.attack_maxm}</td></tr>
+    <div class="fight-club">
+      <table>
+         <caption>{ s.name_two_lines() }</caption>
+         <tr>
+            <th>{ "Base attack: " }</th>
+            <td>{s.params.attack_base}{"–"}{s.params.attack_maxm}</td>
+        </tr>
          // <tr><td>{ "+ per level: " }{s.params.attack_incr}</td></tr>
-         <tr><td>
-            { "+" }{s.params.attack_incr}{" per lvl, "}
-            <button onclick={attack_down}>{ "-" }</button>
-            {s.levels.attack}{"/"}{s.params.attack_lvls}
-            <button onclick={attack_up}>{ "+" }</button>
-         </td></tr>
+         <tr>
+            if (s.params.attack_lvls > 0) && (!s.name().starts_with("_")){
+            <th>{ "+" }{s.params.attack_incr}{" per lvl, "}</th>
+                <td class="but_td">
+                    <button onclick={attack_down}>{ "–" }</button>
+                    <span class="values">
+                    {s.levels.attack}{" / "}{s.params.attack_lvls}
+                    </span>
+                    <button onclick={attack_up}>{ "+" }</button>
+                </td>
+            }
+            else {
+                <th></th>
+                <td>
+                    { format!("{} can't be trained in Attack", s.name()) }
+                </td>
+            }
+        </tr>
 
-         <tr><td>{ "Base defence: " }{s.params.defence_base}</td></tr>
+         <tr>
+            <th>{ "Base defence: " }</th>
+            <td>{s.params.defence_base}</td>
+         </tr>
          // <tr><td>{ "+ per level: " }{s.params.defence_incr}</td></tr>
-         <tr><td>
-            { "+" }{s.params.defence_incr}{" per lvl, "}
-            <button onclick={defence_down}>{ "-" }</button>
-            {s.levels.defence}{"/"}{s.params.defence_lvls}
-            <button onclick={defence_up}>{ "+" }</button>
-         </td></tr>
+         <tr>
+            if (s.params.defence_lvls > 0) && (!s.name().starts_with("_")) {
+            <th>{ "+" }{s.params.defence_incr}{" per lvl, "}</th>
+                <td class="but_td">
+                    <button onclick={defence_down}>{ "–" }</button>
+                    <span class="values">
+                    {s.levels.defence}{" / " }{s.params.defence_lvls}
+                    </span>
+                    <button onclick={defence_up}>{ "+" }</button>
+                </td>
+            }
+            else {
+                <th></th>
+                <td class="small">
+                    { format!("{} can't be trained in defense", s.name()) }
+                </td>
+            }
+         </tr>
 
-         <tr><td>{ "Base health: " }{s.params.health_base}</td></tr>
+         <tr>
+            <th>{ "Base health: " }</th>
+            <td>{s.params.health_base}</td>
          // <tr><td>{ "+ per level: " }{s.params.health_incr}</td></tr>
-         <tr><td>
-            { "+" }{s.params.health_incr}{" per lvl, "}
-            <button onclick={health_down}>{ "-" }</button>
-            {s.levels.health}{"/"}{s.params.health_lvls}
-            <button onclick={health_up}>{ "+" }</button>
-         </td></tr>
+         </tr>
+         <tr>
+            if (s.params.health_lvls > 0) && (!s.name().starts_with("_")) {
+            <th>{ "+" }{s.params.health_incr}{" per lvl, "}</th>
+                <td class="but_td">
+                    <button onclick={health_down}>{ "–" }</button>
+                    <span class="values">
+                    {s.levels.health}{" / "}{s.params.health_lvls}
+                    </span>
+                    <button onclick={health_up}>{ "+" }</button>
+                </td>
+            }
+            else {
+                <th></th>
+                <td class="small">
+                    { format!("{} can't be trained in health", s.name()) }
+                </td>
+            }
+         </tr>
 
-         <tr><td>{ "Base evade: " }{s.params.evade_base}</td></tr>
+         <tr>
+            <th>{ "Base evade: " }</th>
+            <td>{s.params.evade_base}</td>
+        </tr>
          // <tr><td>{ "+ per level: " }{s.params.evade_incr}</td></tr>
-         <tr><td>
-            { "+" }{s.params.evade_incr}{" per lvl, "}
-            <button onclick={evade_down}>{ "-" }</button>
-            {s.levels.evade}{"/"}{s.params.evade_lvls}
-            <button onclick={evade_up}>{ "+" }</button>
-         </td></tr>
+         <tr>
+            if (s.params.evade_lvls > 0) && (!s.name().starts_with("_")) {
+            <th>{ "+" }{s.params.evade_incr}{" per lvl, "}</th>
+                <td class="but_td">
+                    <button onclick={evade_down}>{ "–" }</button>
+                    <span class="values">
+                    {s.levels.evade}{" / "}{s.params.evade_lvls}
+                    </span>
+                    <button onclick={evade_up}>{ "+" }</button>
+                </td>
+            }
+            else {
+                <th></th>
+                <td class="small">
+                    { format!("{} can't be trained in evade", s.name()) }
+                </td>
+            }
+         </tr>
 
 
-         <tr><td><button onclick={remove}>{ "remove" }</button></td></tr>
-      </table></td>
+         <tr><td colspan="2" class="rem_but"><button onclick={remove}>{ "remove" }</button></td></tr>
+      </table>
+      </div>
    }
 }
 
