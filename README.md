@@ -1,6 +1,12 @@
 Wide-fighter is a soldier fight simulator for widelands, similar to wl_soldiers
 (https://github.com/einstein13/wl_soldiers).
 
+This version was made with yew, and I had trouble with some aspects of user input. A new version in egui/eframe is at leklachu/wide-fighter (this is now wide-fighter_yew).
+
+N.B. it now does not build: I suspect some new version of wasm-bindgen or trunk is the reason. It might be easily fixable by editing index.html... or it might not.
+
+---
+
 Simulate many fights between soldiers of the different Widelands tribes to see
 which wins more, under various conditions.
 
